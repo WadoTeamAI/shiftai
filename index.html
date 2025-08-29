@@ -70,6 +70,14 @@
             <h1 class="text-3xl sm:text-4xl font-bold mb-2">Shift AI 2周年イベント</h1>
             <h2 class="text-xl sm:text-2xl font-semibold">株式会社UnionAI ブース運営ガイド</h2>
             <p class="text-lg mt-2"><i class="fas fa-calendar-alt mr-2"></i>2025年8月30日 (土) [当日資料]</p>
+            
+            <!-- 鼓舞のメッセージ -->
+            <div class="bg-white bg-opacity-20 rounded-lg p-4 mt-6">
+                <h3 class="text-lg font-bold mb-2"><i class="fas fa-heart mr-2"></i>チームへのメッセージ</h3>
+                <p class="text-base leading-relaxed">
+                    ここまで運営企画など準備にご尽力いただきありがとうございます！明日は初のブース出店にはなりますが、今後法人対応や展示会など、会社として対応することも増えてくるかと思いますので、みんなで協力して成功させましょう！よろしくお願いします！！
+                </p>
+            </div>
         </header>
 
         <!-- 本日の目的と最重要ゴール -->
@@ -299,7 +307,7 @@
             </h3>
             <ul class="list-disc list-inside space-y-3">
                 <li><span class="font-bold">抽選会:</span> 15:15から。出展者も参加可能です！QRコードで発行された番号を控えておきましょう。</li>
-                <li><span class="font-bold">木内代表挨拶:</span> 時間の都合でブースに来られる可能性があります。その際は丁寧な対応をお願いします。</li>
+
                 <li><span class="font-bold">Wi-Fi:</span> 会場回線は混雑が予想されます。持参したモバイルWi-Fiをメインで使いましょう。</li>
                 <li><span class="font-bold">SNS投稿:</span> <a href="https://x.com/messages/media/1959554930726871431" target="_blank" class="text-blue-300 underline hover:text-blue-200">公式Xの投稿</a>にリポスト協力をお願いします！</li>
                  <li><span class="font-bold">名刺交換:</span> 懇親会などを活用し、他ブースの方とも積極的に交流しましょう。</li>
@@ -319,41 +327,37 @@
         const personaSelector = document.getElementById('persona-selector');
         const scriptOutput = document.getElementById('script-output');
 
-        const callGeminiApi = async (prompt, retries = 3, delay = 1000) => {
-            const apiKey = ""; // Canvas will provide the key
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
-            
-            const payload = {
-                contents: [{ parts: [{ text: prompt }] }],
+        const generateMockScript = async (persona) => {
+            // Simulated AI responses for different personas
+            const scripts = {
+                "学生": [
+                    "『AIで副業って興味ありませんか？』学生さんでも月5-10万円稼げる実例があります。プログラミング知識は一切不要で、ChatGPTやCanvaを使った実践的なノウハウをお教えします！",
+                    "『就活でAIスキルがあると差別化できますよ』今の時代、AI活用できる人材は企業から重宝されます。わどAIスクールでは実際のビジネスで使える技術を学べます！",
+                    "『学生のうちにAIマスターになりませんか？』月数万円の副業から始めて、将来は起業も可能です。実際に私たちも副業から1年で年商3億円を達成しました！"
+                ],
+                "会社員": [
+                    "『今の仕事にAI導入して、もっと楽になりたくないですか？』資料作成やメール対応など、毎日の作業を半分の時間で終わらせる方法をお教えします！",
+                    "『副業でAI使って月20-30万稼げたらどうですか？』会社員の方でも土日だけで十分可能です。実際の成功事例を豊富に持っています！",
+                    "『将来のキャリアアップにAIスキルは必須ですよね』今のうちにAI活用のプロになって、社内での価値を高めませんか？個別相談で具体的な戦略をお話しします！"
+                ],
+                "経営者": [
+                    "『事業にAI導入して売上3倍にしませんか？』私たちは1年未満で年商3億円達成しました。その具体的な手法をお教えできます！",
+                    "『競合他社より先にAI活用で市場を独占しませんか？』AIマーケティングで総フォロワー20万人、インスタ4ヶ月で5万人達成の実績があります！",
+                    "『人件費削減と売上アップを同時に実現したくないですか？』AI導入で業務効率化と新規事業創出の両方が可能です。成功の秘訣をお話しします！"
+                ],
+                "マーケター": [
+                    "『AIでコンテンツ制作を10倍効率化しませんか？』InstagramをAI美女で4ヶ月5万人まで成長させた具体的な手法をお教えします！",
+                    "『ROIを劇的に改善するAIマーケティング手法に興味ありませんか？』従来比3-5倍の成果が期待できる最新の活用法をお教えします！",
+                    "『クリエイティブ制作をAIで自動化して、戦略立案に集中しませんか？』マーケターとしてのスキルをさらに高める方法をご提案します！"
+                ],
+                "エンジニア": [
+                    "『エンジニアこそAIで差別化できる時代ですよね』コーディング以外でAI活用して副業収入を得る方法をお教えします！技術力を活かした収益化が可能です！",
+                    "『AI開発だけでなく、AIビジネスにも興味ありませんか？』技術的なバックグラウンドを持つエンジニアなら、より高収益なAI事業が構築できます！",
+                    "『プログラミングスキルをAIと組み合わせて収益最大化しませんか？』コードが書けるからこそできる、独自のAI活用法をお教えします！"
+                ]
             };
-
-            for (let i = 0; i < retries; i++) {
-                try {
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-
-                    const result = await response.json();
-                    const candidate = result.candidates?.[0];
-                    if (candidate && candidate.content?.parts?.[0]?.text) {
-                        return candidate.content.parts[0].text;
-                    } else {
-                        throw new Error('Invalid response structure from Gemini API');
-                    }
-                } catch (error) {
-                    console.error(`Attempt ${i + 1} failed:`, error);
-                    if (i === retries - 1) {
-                        throw error; // Rethrow last error
-                    }
-                    await new Promise(resolve => setTimeout(resolve, delay * Math.pow(2, i))); // Exponential backoff
-                }
-            }
+            
+            return scripts[persona] || scripts["会社員"];
         };
 
         generateBtn.addEventListener('click', async () => {
@@ -366,18 +370,28 @@
                 </div>`;
             generateBtn.disabled = true;
 
-            const prompt = `あなたは、AIスクール「わどAIスクール」のトップセールス担当者です。AIの知識がない人にも、その魅力と将来性を分かりやすく伝えるプロです。これから、イベントのブースに来場した【${selectedPersona}】に対して、個別相談に申し込みたくなるような、簡潔で説得力のあるトークスクリプトを3つ提案してください。各スクリプトは情熱的で、相手のメリットに焦点を当ててください。箇条書きで、見出しはつけずに提案してください。`;
-
             try {
-                const resultText = await callGeminiApi(prompt);
-                // Simple formatting to make bullet points look nice
-                const formattedHtml = resultText
-                    .split('\n')
-                    .filter(line => line.trim().startsWith('*') || line.trim().startsWith('・') || /^\d+\./.test(line.trim()))
-                    .map(line => `<div class="p-3 mb-2 bg-purple-50 rounded-lg">${line.replace(/^[\*\・] ?|^\d+\. ?/g, '')}</div>`)
+                // Use mock scripts for reliable operation
+                const scripts = await generateMockScript(selectedPersona);
+                
+                const formattedHtml = scripts
+                    .map((script, index) => `
+                        <div class="p-4 mb-3 bg-purple-50 rounded-lg border border-purple-200">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 w-8 h-8 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold mr-3">${index + 1}</div>
+                                <div class="text-gray-800">${script}</div>
+                            </div>
+                        </div>
+                    `)
                     .join('');
 
-                scriptOutput.innerHTML = formattedHtml || `<p class="text-red-500">AIからの応答を整形できませんでした。再度お試しください。</p><pre class="text-xs bg-gray-100 p-2 mt-2 rounded">${resultText}</pre>`;
+                scriptOutput.innerHTML = `
+                    <h4 class="text-lg font-bold text-purple-800 mb-4">${selectedPersona}向け トークスクリプト</h4>
+                    ${formattedHtml}
+                    <div class="mt-4 p-3 bg-gray-50 rounded text-sm text-gray-600">
+                        <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>これらのスクリプトを参考に、自然な会話を心がけてください！
+                    </div>
+                `;
 
             } catch (error) {
                 console.error('Failed to generate script:', error);
